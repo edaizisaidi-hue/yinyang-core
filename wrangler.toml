@@ -1,0 +1,22 @@
+# OMEGA SOVEREIGN INTELLIGENCE - EDGE NODE CONFIGURATION
+# Framework: Cloudflare Workers (Python Edge)
+
+name = "omega-sovereign-shield"
+main = "api/app.py"
+compatibility_date = "2026-07-21"
+compatibility_flags = ["python_workers"]
+
+# Mengehadkan eksekusi untuk mengelakkan OOM pada tahap Edge
+usage_model = "bundled" 
+
+[vars]
+SOVEREIGN_MODE = "strict"
+API_ENVIRONMENT = "edge-production"
+WAFQ_BASE_DEPTH = "3"
+WAFQ_MAX_DEPTH = "9"
+
+# NOTA KEDAULATAN: 
+# Pembolehubah rahsia tidak didokumentasikan di sini.
+# Mesti disuntik secara manual menggunakan arahan:
+# npx wrangler secret put OMEGA_MASTER_KEY
+# npx wrangler secret put OMEGA_WALLET_ADDRESS
