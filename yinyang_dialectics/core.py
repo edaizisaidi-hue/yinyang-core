@@ -5,34 +5,18 @@ Sovereign Dynamic Scaling (Wafq 369 Protocol)
 
 import re
 from typing import List, Dict, Optional
-
-try:
-    from .auth import APIKeyValidator
-except ImportError:
-    APIKeyValidator = None
+from .auth import SovereignAuthenticator
 
 class YinyangDialectics:
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_depth: int = 3,
-        max_dynamic_depth: int = 9,
-        validate_key: bool = True
-    ):
-        self.base_depth = base_depth
+    def __init__(self, max_dynamic_depth: int = 9):
         self.max_dynamic_depth = max_dynamic_depth
-        if validate_key and APIKeyValidator:
-            self.auth = APIKeyValidator(api_key)
+        self.auth_engine = SovereignAuthenticator()
 
     def _calculate_dynamic_depth(self, data: str) -> int:
-        """Matriks Wafq: Skala kedalaman dinamik (3-6-9)"""
         length = len(data)
-        if length < 100:
-            return 3  # Resolusi Rendah
-        elif length < 500:
-            return 6  # Resolusi Sederhana
-        else:
-            return 9  # Resolusi Maksimum (Hiper-Kuantum)
+        if length < 100: return 3
+        elif length < 500: return 6
+        else: return min(9, self.max_dynamic_depth)
 
     def _fractal_split(self, data: str) -> List[str]:
         if not data: return []
